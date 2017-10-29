@@ -7,11 +7,25 @@
 * linux/macOS
 
 ## 运行依赖包
-* requests
+* uvloop
+* aiohttp
 * lxml
 * selenium
 * PhantomJS/ChromeDriver
 
 ## 源代码说明
-### spiders
-抓取代理地址的逻辑实现, 抓取
+整体采用asyncio+uvloop+aiohttp的方式异步抓取.
+
+目前可以不借助Selenium的代理网站有:
+* xicidaili.com
+* ip181.com
+* kuaidaili.com
+* 66ip.cn
+
+## TODO
+1. 设置解析规则, 加入到crawler.py中
+2. 学习设置asyncio的lock机制
+3. 设置IP代理验证
+4. 持久化保存IP代理
+5. 设置定时
+6. 接入search_visual, 提供API接口和可视化.
