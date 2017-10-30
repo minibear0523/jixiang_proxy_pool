@@ -20,12 +20,13 @@
 * xicidaili.com
 * ip181.com
 * kuaidaili.com
-* 66ip.cn
+* xdaili.cn
 
 ## TODO
-1. 设置解析规则, 加入到crawler.py中
-2. 学习设置asyncio的lock机制
-3. 设置IP代理验证
-4. 持久化保存IP代理
-5. 设置定时
-6. 接入search_visual, 提供API接口和可视化.
+1. [x] 设置解析规则, 加入到crawler.py中
+2. [x] 学习设置asyncio的lock机制
+3. [x] 设置IP代理验证
+4. [x] 持久化保存IP代理
+5. [x] 设置定时
+6. [x] 接入search_visual, 提供API接口和可视化.
+7. [x] 使用python-json-logger输出JSON格式化的log文件, 便于以后使用ElasticStack进行log监控.
