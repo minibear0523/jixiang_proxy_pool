@@ -10,11 +10,10 @@
 * uvloop
 * aiohttp
 * lxml
-* selenium
-* PhantomJS/ChromeDriver
+* MongoDB/pymongo
 
 ## 源代码说明
-整体采用asyncio+uvloop+aiohttp的方式异步抓取.
+整体采用asyncio+uvloop+aiohttp的方式异步抓取, 将结果存入MongoDB中.
 
 目前可以不借助Selenium的代理网站有:
 * xicidaili.com

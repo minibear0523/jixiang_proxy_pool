@@ -11,7 +11,6 @@ def crawl():
         'http://www.xicidaili.com/nn/',
         'http://www.xicidaili.com/wt/',
         'http://www.xicidaili.com/wn/',
-        'http://www.xicidaili.com/nt/',
         'http://www.kxdaili.com/dailiip/2/1.html',
         'http://www.kuaidaili.com/free/inha/1/',
         'http://www.xdaili.cn/ipagent/freeip/getFreeIps'

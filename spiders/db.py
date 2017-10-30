@@ -15,5 +15,6 @@ def insert_proxy(proxies):
     """
     Insert Proxy List From Crawler
     """
-    result = collection.insert_many(proxies)
+    data = list(map(lambda x: attr.asdict(x), proxies))
+    result = collection.insert_many(data)
     return result.inserted_ids

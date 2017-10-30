@@ -7,7 +7,7 @@ import ujson
 import arrow
 
 
-@attr.s
+@attr.attrs
 class Proxy(object):
     """
     代理对象
