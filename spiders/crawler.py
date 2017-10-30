@@ -119,7 +119,6 @@ class Crawler(object):
             if content_type in ('text/html', 'application/xml'):
                 text = await response.text()
                 proxies, links = Parser(url=response.url, html=text, more=False).parse_proxy()
-                pprint(proxies)
                 self.record_statistic(proxies)
         else:
             print('request failed: %s', response.status)
@@ -128,23 +127,23 @@ class Crawler(object):
     def record_statistic(self, proxies):
         self.done.extend(proxies)
 
-if __name__ == '__main__':
-    loop = uvloop.new_event_loop()
-    asyncio.set_event_loop(loop)
-    roots = [
-        'http://ip181.com',
-        'http://www.xicidaili.com/nn/',
-        'http://www.xicidaili.com/wt/',
-        'http://www.xicidaili.com/wn/',
-        'http://www.xicidaili.com/nt/',
-        'http://www.kxdaili.com/dailiip/2/1.html',
-        'http://www.kuaidaili.com/free/inha/1/',
-        'http://www.xdaili.cn/ipagent/freeip/getFreeIps'
-    ]
-    crawler = Crawler(roots=roots, loop=loop, max_tasks=100)
-    loop.run_until_complete(crawler.crawl())
-    print('Finished {0} proxies in {1:.3f} secs'.format(len(crawler.done), crawler.t1-crawler.t0))
-    with open('results.json', 'w') as f:
-        ujson.dump(crawler.done, f)
-    crawler.close()
-    loop.close()
+# if __name__ == '__main__':
+#     loop = uvloop.new_event_loop()
+#     asyncio.set_event_loop(loop)
+#     roots = [
+#         'http://ip181.com',
+#         'http://www.xicidaili.com/nn/',
+#         'http://www.xicidaili.com/wt/',
+#         'http://www.xicidaili.com/wn/',
+#         'http://www.xicidaili.com/nt/',
+#         'http://www.kxdaili.com/dailiip/2/1.html',
+#         'http://www.kuaidaili.com/free/inha/1/',
+#         'http://www.xdaili.cn/ipagent/freeip/getFreeIps'
+#     ]
+#     crawler = Crawler(roots=roots, loop=loop, max_tasks=100)
+#     loop.run_until_complete(crawler.crawl())
+#     print('Finished {0} proxies in {1:.3f} secs'.format(len(crawler.done), crawler.t1-crawler.t0))
+#     with open('results.json', 'w') as f:
+#         ujson.dump(crawler.done, f)
+#     crawler.close()
+#     loop.close()

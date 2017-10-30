@@ -50,7 +50,7 @@ class Parser(object):
             protocol = proxy_info[3].strip().lower()
             location = proxy_info[5].strip()
 
-            self.proxies.append(attr.asdict(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='ip181')))
+            self.proxies.append(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='ip181'))
 
         if self.more:
             for link in tree.xpath('//div[@class="page"]/a/@href'):
@@ -76,7 +76,7 @@ class Parser(object):
             protocol = ''.join(proxy_info[5].xpath('./text()')).strip().lower()
             print(ip, port, location, level, protocol)
 
-            self.proxies.append(attr.asdict(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='xicidaili')))
+            self.proxies.append(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='xicidaili'))
 
         if self.more:
             for link in tree.xpath('//div[@class="pagination"]/a/@href'):
@@ -97,7 +97,7 @@ class Parser(object):
             protocol = proxy_info[3].strip().lower()
             location = proxy_info[5].strip()
 
-            self.proxies.append(attr.asdict(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='kxdaili')))
+            self.proxies.append(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='kxdaili'))
 
         if self.more:
             for link in self.tree.xpath('//div[@class="page"]/a/@href'):
@@ -119,7 +119,7 @@ class Parser(object):
             protocol = proxy_info[3].strip().lower()
             location = proxy_info[4].strip()
 
-            self.proxies.append(attr.asdict(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='kuaidaili')))
+            self.proxies.append(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='kuaidaili'))
 
         if self.more:
             for link in self.tree.xpath('//div[@id="listnav"]/ul/li/a/@href'):
@@ -140,4 +140,4 @@ class Parser(object):
             protocol = proxy_info['type'].lower()
             location = proxy_info['position']
 
-            self.proxies.append(attr.asdict(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='xdaili')))
+            self.proxies.append(Proxy(IP=ip, port=port, level=level, protocol=protocol, location=location, source='xdaili'))
