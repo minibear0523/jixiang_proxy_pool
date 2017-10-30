@@ -38,15 +38,12 @@ class CheckIP(object):
         ]
         self.https_check_urls = [
             'https://ddns.oray.com/checkip',
-            'https://www.baidu.com',
-            'https://www.douban.com',
-            'https://www.jd.com'
+            'https://www.tianyancha.com'
         ]
         self.spider_check_urls = [
             'http://www.qichacha.com',
             'http://www.qixin.com',
             'http://www.gsxt.gov.cn/index.html',
-            'https://www.tianyancha.com'
         ]
         self.q = Queue(loop=loop)
         self.loop = loop
@@ -102,4 +99,14 @@ class CheckIP(object):
         else:
             schema = 'http'
         proxy_url = '%s://%s:%s' % (schema, proxy['ip'], proxy['port'])
-        
+
+        tries = 0
+        while tries < 3:
+            try:
+                response = await self.session.get(self.http_check_url)
+            except aiohttp.ClientError as error:
+                print(error)
+        else:
+            print('Max Retries')
+            return
+        if response.status == 200:
