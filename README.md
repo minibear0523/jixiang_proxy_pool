@@ -21,9 +21,10 @@
 * ip181.com
 * kuaidaili.com
 * xdaili.cn
+* kxdaili.com
 
 ## TODO
-1. [x] 设置解析规则, 加入到crawler.py中
+1. [√] 设置解析规则, 加入到crawler.py中
 2. [x] 学习设置asyncio的lock机制
 3. [x] 设置IP代理验证
 4. [x] 持久化保存IP代理
