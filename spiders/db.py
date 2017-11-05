@@ -18,3 +18,7 @@ def insert_proxy(proxies):
     data = list(map(lambda x: attr.asdict(x), proxies))
     result = collection.insert_many(data)
     return result.inserted_ids
+
+def get_nn_proxy():
+    result = collection.find({'level': '高匿'})
+    return result

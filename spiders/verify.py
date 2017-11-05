@@ -1,11 +1,10 @@
 # encoding=utf-8
-import aiohttp
+import requests
 import ujson
-import attr
 import re
 import time
-from asyncio import Queue, Task
 import arrow
+from pprint import pprint
 
 
 Headers = {
@@ -28,7 +27,7 @@ class CheckIP(object):
     3. 需要爬虫的几个网站: qichacha.com. qixin.com, tianyancha.com, gsxt.gov.cn
     """
 
-    def __init__(self, loop):
+    def __init__(self):
         self.local = ''
         self.http_check_url = 'http://ddns.oray.com/checkip'
         self.http_check_urls = [
@@ -45,48 +44,26 @@ class CheckIP(object):
             'http://www.qixin.com',
             'http://www.gsxt.gov.cn/index.html',
         ]
-        self.q = Queue(loop=loop)
-        self.loop = loop
-        self.session = aiohttp.ClientSession(loop=loop)
-        self.loop.run_until_complete(self._get_local())
-        self.t0 = time.time()
+        self.session = requests.Session()
+        self.session.headers.update(Headers)
+        self.t0 = None
         self.t1 = None
 
     def close(self):
         self.session.close()
 
-    async def _get_local(self):
+    def _get_local(self):
         """
         获取当前IP地址
         """
-        req = await self.session.get(self.http_check_url, headers=Headers)
-        text = await req.text()
+        req = self.session.get(self.http_check_url, headers=Headers)
+        text = req.text()
         self.local = self.parse_ip(text)
 
     def parse_ip(self, html):
         return re.findall(IP_Reg, text)[0]
 
-    async def verify(self):
-        """
-        创建50个协程来进行验证
-        """
-        workers = [Task(self.check(), loop=self.loop) for _ in range(50)]
-        self.t0 = time.time()
-        self.q.join()
-        self.t1 = time.time()
-        for w in workers:
-            w.cancel()
-
-    async def check(self):
-        try:
-            while True:
-                proxy = await self.q.get()
-                await self.fetch(proxy)
-                self.q.task_done()
-        except asyncio.CancelledError as error:
-            print(error)
-
-    async def fetch(self, proxy):
+    def verify(self, proxy):
         """
         判断代理是否是HTTPS代理
         分别请求几个网站, 一旦发生错误就标记验证失败次数+1
@@ -98,15 +75,27 @@ class CheckIP(object):
             schema = 'https'
         else:
             schema = 'http'
-        proxy_url = '%s://%s:%s' % (schema, proxy['ip'], proxy['port'])
+        proxy_dict = {
+            schema: '%s://%s:%s' % (schema, proxy['IP'], proxy['port'])
+        }
+        pprint(proxy_dict)
 
-        tries = 0
-        while tries < 3:
+        try:
+            response = self.session.get(self.http_check_url, proxies=proxy_dict, timeout=15)
+        except Exception as error:
+            print(error)
+            return False
+        if response.status_code != 200:
+            return False
+
+        for url in self.https_check_urls:
             try:
-                response = await self.session.get(self.http_check_url)
-            except aiohttp.ClientError as error:
-                print(error)
-        else:
-            print('Max Retries')
-            return
-        if response.status == 200:
+                print(url)
+                response = self.session.get(url, proxies=proxy_dict, timeout=15)
+            except Exception as error:
+                if isinstance(error, requests.HTTPError):
+                    return Fasle
+            if response.status_code != 200:
+                return False
+
+        return True

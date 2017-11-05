@@ -1,7 +1,8 @@
 import asyncio
 import uvloop
 from crawler import Crawler
-from db import insert_proxy
+from verify import CheckIP
+from db import insert_proxy, get_nn_proxy
 
 def crawl():
     loop = uvloop.new_event_loop()
@@ -25,6 +26,14 @@ def crawl():
     crawler.close()
     loop.close()
 
+def verify():
+    check = CheckIP()
+    nn_proxy = get_nn_proxy()
+    for proxy in nn_proxy:
+        result = check.verify(proxy)
+        print('IP: %s, status: %s' % (proxy['IP'], result))
+
 
 if __name__ == '__main__':
-    crawl()
+    # crawl()
+    verify()
